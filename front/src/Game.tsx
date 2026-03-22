@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Stage, Layer, Rect, Circle, Line, Text } from 'react-konva';
 import type { Room } from './types';
 
