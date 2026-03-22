@@ -3,7 +3,7 @@ import { Game } from './Game.tsx';
 import { Overlay } from './Overlay.tsx';
 import type { Room, ServerEvent } from './types';
 
-const WS_URL = 'ws://10.0.0.130:3333/websocket';
+const WS_URL = 'wss://ping-pong-production-b5c0.up.railway.app/websocket';
 
 function criarSons(ctx: AudioContext) {
   function playBeep(frequency: number, duration: number, volume = 0.3) {
