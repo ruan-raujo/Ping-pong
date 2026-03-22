@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# 🏓 Pong Multiplayer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Jogo de Pong multiplayer em tempo real, onde dois jogadores se conectam cada um no seu navegador e jogam uma partida completa via WebSocket.
 
-Currently, two official plugins are available:
+Projeto desenvolvido durante um desafio ao vivo no canal da [Codecon](https://www.youtube.com/@codecon).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🎮 Como jogar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Acesse o jogo em dois navegadores ou dispositivos diferentes
+2. Digite seu nome e clique em **Jogar partida**
+3. Aguarde o segundo jogador conectar
+4. Use **W / S** ou **↑ / ↓** para mover sua raquete
+5. No celular, use os botões na tela
+6. Primeiro a fazer **5 pontos** vence
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Funcionalidades
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Multiplayer em tempo real via WebSocket
+- Game loop de 60 FPS sincronizado no servidor
+- Power-up de velocidade ⚡ — acelera a bolinha ao ser coletado
+- Sons sintéticos via Web Audio API
+- Sistema de revanche — jogadores podem reiniciar sem reconectar
+- Suporte a mobile com controles touch
+- Layout responsivo
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Tecnologias
+
+**Frontend**
+- React + TypeScript
+- Vite
+- React Konva (canvas 2D)
+- Motion (animações)
+
+**Backend**
+- Bun
+- Elysia (framework WebSocket)
+
+---
+
+## 🚀 Rodando localmente
+
+**Pré-requisitos:** Node.js 20.19+, pnpm, Bun
+```bash
+# Backend
+cd server
+bun install
+bun run dev
+
+# Frontend (em outro terminal)
+cd front
+pnpm install
+pnpm dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Abra `http://localhost:5173` em duas abas e clique em **Join match** nas duas.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🏗️ Arquitetura
+```
+Cliente (Navegador)          Servidor (Bun)
+─────────────────            ──────────────
+Renderização          ←────  Estado do jogo
+Input do jogador      ────→  Física e colisões
+WebSocket client      ←────→ WebSocket server
+                             Game loop 60 FPS
+```
+
+O servidor é a **fonte única de verdade** — toda a física, colisões e pontuação são calculadas no backend e transmitidas aos clientes via WebSocket.
+
+---
+
+## 📁 Estrutura
+```
+pong-multiplayer/
+├── front/
+│   └── src/
+│       ├── App.tsx       # Estado e WebSocket
+│       ├── Game.tsx      # Canvas com Konva
+│       ├── Overlay.tsx   # Telas de espera/contagem/vitória
+│       └── types.ts      # Tipos compartilhados
+└── server/
+    └── src/
+        ├── index.ts      # Servidor Elysia
+        ├── room.ts       # Gerenciamento de salas
+        └── game.ts       # Loop, física e colisões
 ```
