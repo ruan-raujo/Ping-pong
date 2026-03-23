@@ -4,7 +4,6 @@ import { Overlay } from './Overlay.tsx';
 import type { Room, ServerEvent } from './types';
 
 const WS_URL = 'wss://ping-pong-production-b5c0.up.railway.app/websocket';
-
 function criarSons(ctx: AudioContext) {
   function playBeep(frequency: number, duration: number, volume = 0.3) {
     const osc = ctx.createOscillator();
